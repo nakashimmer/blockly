@@ -4,10 +4,10 @@
 <head>
 	<meta charset="utf-8">
 	<title>Blockly Demo: Generating JavaScript</title>
-	<script src="../blockly_compressed.js"></script>
-	<script src="../blocks_compressed.js"></script>
-	<script src="../javascript_compressed.js"></script>
-	<script src="../msg/js/ja.js"></script>
+	<script src="https://nakashimmer.github.io/blocky/blockly_compressed.js"></script>
+	<script src="https://nakashimmer.github.io/blocky/blocks_compressed.js"></script>
+	<script src="https://nakashimmer.github.io/blocky/javascript_compressed.js"></script>
+	<script src="https://nakashimmer.github.io/blocky/msg/js/ja.js"></script>
 	<style>
 		body {
 			background-color: #fff;
@@ -18,35 +18,36 @@
 			font-weight: normal;
 			font-size: 140%;
 		}
-		#code{width:200px;height:480px;border:1px solid blue;}
+		#code{flex:1;height:480px;border:1px solid blue;font-size:20px;}
+		button{font-size:20px;}
 	</style>
 </head>
 
 <body>
-	<h1>Generating JavaScript</h1>
+	<h1>JavaScript生成</h1>
 
 	<p>
-		<button onclick="showCode()">Show JavaScript</button>
-		<button onclick="runCode()">Run JavaScript</button>
+		<button onclick="showCode()">JavaScriptを見る</button>
+		<button onclick="runCode()">JavaScriptを実行</button>
 	</p>
 
 	<div style="display:flex;">
 		<div id="blocklyDiv" style="height: 480px; width: 600px;border:1px solid red;"></div>
 
-		<div id="code">a</div>
-		<div id="js"">a</div>
+		<textarea id="code" placeholder="JavaScriptを表示"></textarea>
+	
 
 	</div>
 
 	<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-		<category name="Logic" colour="%{BKY_LOGIC_HUE}">
+		<category name="ロジック" colour="%{BKY_LOGIC_HUE}">
 			<block type="controls_if"></block>
 			<block type="logic_compare"></block>
 			<block type="logic_operation"></block>
 			<block type="logic_negate"></block>
 			<block type="logic_boolean"></block>
 		</category>
-		<category name="Loops" colour="%{BKY_LOOPS_HUE}">
+		<category name="ループ" colour="%{BKY_LOOPS_HUE}">
 			<block type="controls_repeat_ext">
 				<value name="TIMES">
 					<block type="math_number">
@@ -56,14 +57,14 @@
 			</block>
 			<block type="controls_whileUntil"></block>
 		</category>
-		<category name="Math" colour="%{BKY_MATH_HUE}">
+		<category name="数学" colour="%{BKY_MATH_HUE}">
 			<block type="math_number">
 				<field name="NUM">123</field>
 			</block>
 			<block type="math_arithmetic"></block>
 			<block type="math_single"></block>
 		</category>
-		<category name="Text" colour="%{BKY_TEXTS_HUE}">
+		<category name="テキスト" colour="%{BKY_TEXTS_HUE}">
 			<block type="text"></block>
 			<block type="text_length"></block>
 			<block type="text_print"></block>
