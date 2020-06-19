@@ -2,11 +2,11 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Demo: Cloud Storage</title>
+  <title>Blockly デモ: クラウドストレージ</title>
   <script src="/storage.js"></script>
   <script src="../../blockly_compressed.js"></script>
   <script src="../../blocks_compressed.js"></script>
-  <script src="../../msg/js/en.js"></script>
+  <script src="../../msg/js/ja.js"></script>
   <style>
     body {
       background-color: #fff;
@@ -25,9 +25,9 @@
 </head>
 <body>
   <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
-    <a href="../index.html">Demos</a> &gt; Cloud Storage</h1>
+    <a href="../index.html">デモ</a> &gt; クラウドストレージ</h1>
 
-  <p>This is a simple demo of cloud storage using App Engine.</p>
+  <p>これは、App Engineを使用したクラウドストレージの簡単なデモです</p>
 
   <script>
     if ('BlocklyStorage' in window) {
@@ -37,27 +37,27 @@
       BlocklyStorage.XML_ERROR = 'Could not load your saved file.\n'+
           'Perhaps it was created with a different version of Blockly?';
     } else {
-      document.write('<p id="sorry">Sorry, cloud storage is not available.  This demo must be hosted on App Engine.</p>');
+      document.write('<p id="sorry">申し訳ありませんが、クラウドストレージは使用できません。このデモはApp Engineでホストする必要があります。.</p>');
     }
   </script>
 
-  <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure-blockly/web/cloud-storage">Cloud Storage</a>&hellip;</p>
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure-blockly/web/cloud-storage">クラウドストレージ</a>の詳細&hellip;</p>
 
   <p>
-    <button onclick="BlocklyStorage.link()">Save Blocks</button>
+    <button onclick="BlocklyStorage.link()">ブロックを保存</button>
   </p>
 
   <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
+    <category name="論理" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
       <block type="logic_negate"></block>
       <block type="logic_boolean"></block>
     </category>
-    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+    <category name="ループ" colour="%{BKY_LOOPS_HUE}">
       <block type="controls_repeat_ext">
         <value name="TIMES">
           <block type="math_number">
@@ -67,14 +67,14 @@
       </block>
       <block type="controls_whileUntil"></block>
     </category>
-    <category name="Math" colour="%{BKY_MATH_HUE}">
+    <category name="数学" colour="%{BKY_MATH_HUE}">
       <block type="math_number">
         <field name="NUM">123</field>
       </block>
       <block type="math_arithmetic"></block>
       <block type="math_single"></block>
     </category>
-    <category name="Text" colour="%{BKY_TEXTS_HUE}">
+    <category name="テキスト" colour="%{BKY_TEXTS_HUE}">
       <block type="text"></block>
       <block type="text_length"></block>
       <block type="text_print"></block>

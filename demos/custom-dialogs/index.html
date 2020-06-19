@@ -2,10 +2,10 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Demo: Custom Dialog</title>
+  <title>Blockly デモ: カスタムダイアログ</title>
   <script src="../../blockly_compressed.js"></script>
   <script src="../../blocks_compressed.js"></script>
-  <script src="../../msg/js/en.js"></script>
+  <script src="../../msg/js/ja.js"></script>
   <style>
     body {
       background-color: #fff;
@@ -19,21 +19,19 @@
 </head>
 <body>
   <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
-    <a href="../index.html">Demos</a> &gt; Custom Dialog</h1>
+    <a href="../index.html">デモ</a> &gt; カスタムダイアログ</h1>
 
-  <p>This is a simple demo of replacing modal browser dialogs with HTML.
-     To see how it works, see the source code in
-     <a href="custom-dialog.js">custom-dialog.js</a>
+  <p>これは、モーダルブラウザダイアログをHTMLに置き換える簡単なデモです。どのように機能するかを確認するには、
+     <a href="custom-dialog.js">custom-dialog.js</a>のソースコードを参照してください。
   </p>
 
-  <p>Try creating new variables, creating variables with names already in
-     use, or deleting multiple blocks on the workspace.
+  <p>新しい変数を作成するか、すでに使用されている名前の変数を作成するか、ワークスペースの複数のブロックを削除してください。
   </p>
 
   <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Inputs" colour="%{BKY_MATH_HUE}">
+    <category name="入力" colour="%{BKY_MATH_HUE}">
       <block type="math_number" gap="32">
         <field name="NUM">123</field>
       </block>
@@ -47,8 +45,8 @@
       </block>
     </category>
     <sep></sep>
-    <category name="Variables" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
-    <category name="Functions" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
+    <category name="変数" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
+    <category name="関数" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
   </xml>
 
   <script>

@@ -2,11 +2,11 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Demo: Generating JavaScript</title>
+  <title>Blockly デモ: JavaScript生成</title>
   <script src="../../blockly_compressed.js"></script>
   <script src="../../blocks_compressed.js"></script>
   <script src="../../javascript_compressed.js"></script>
-  <script src="../../msg/js/en.js"></script>
+  <script src="../../msg/js/ja.js"></script>
   <style>
     body {
       background-color: #fff;
@@ -20,29 +20,28 @@
 </head>
 <body>
   <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
-    <a href="../index.html">Demos</a> &gt; Generating JavaScript</h1>
+    <a href="../index.html">デモ</a> &gt; JavaScript生成</h1>
 
-  <p>This is a simple demo of generating code from blocks and running
-  the code in a sandboxed JavaScript interpreter.</p>
+  <p>これは、ブロックからコードを生成し、サンドボックス化されたJavaScriptインタープリターでコードを実行する簡単なデモです。</p>
 
-  <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure/web/code-generators">Code Generators</a> and <a href="https://developers.google.com/blockly/guides/app-integration/running-javascript">Running JavaScript</a>.</p>
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure/web/code-generators">Code 生成</a> と <a href="https://developers.google.com/blockly/guides/app-integration/running-javascript">JavaScript実行</a>の詳細。</p>
 
   <p>
-    <button onclick="showCode()">Show JavaScript</button>
-    <button onclick="runCode()">Run JavaScript</button>
+    <button onclick="showCode()">JavaScriptを見る</button>
+    <button onclick="runCode()">JavaScriptを実行</button>
   </p>
 
   <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
+    <category name="論理" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
       <block type="logic_negate"></block>
       <block type="logic_boolean"></block>
     </category>
-    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+    <category name="ループ" colour="%{BKY_LOOPS_HUE}">
       <block type="controls_repeat_ext">
         <value name="TIMES">
           <block type="math_number">
@@ -52,14 +51,14 @@
       </block>
       <block type="controls_whileUntil"></block>
     </category>
-    <category name="Math" colour="%{BKY_MATH_HUE}">
+    <category name="数学" colour="%{BKY_MATH_HUE}">
       <block type="math_number">
         <field name="NUM">123</field>
       </block>
       <block type="math_arithmetic"></block>
       <block type="math_single"></block>
     </category>
-    <category name="Text" colour="%{BKY_TEXTS_HUE}">
+    <category name="テキスト" colour="%{BKY_TEXTS_HUE}">
       <block type="text"></block>
       <block type="text_length"></block>
       <block type="text_print"></block>

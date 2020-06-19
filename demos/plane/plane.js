@@ -100,8 +100,8 @@ Plane.getNumberParamFromUrl = function(name, minValue, maxValue) {
 Plane.getLang = function() {
   var lang = Plane.getStringParamFromUrl('lang', '');
   if (Plane.LANGUAGE_NAME[lang] === undefined) {
-    // Default to English.
-    lang = 'en';
+    // Default to Japanese.
+    lang = 'ja';
   }
   return lang;
 };

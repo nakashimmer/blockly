@@ -2,10 +2,10 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Demo: Toolbox</title>
+  <title>Blockly デモ: ツールボックス</title>
   <script src="../../blockly_compressed.js"></script>
   <script src="../../blocks_compressed.js"></script>
-  <script src="../../msg/js/en.js"></script>
+  <script src="../../msg/js/ja.js"></script>
   <style>
     body {
       background-color: #fff;
@@ -19,16 +19,16 @@
 </head>
 <body>
   <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
-    <a href="../index.html">Demos</a> &gt; Toolbox</h1>
+    <a href="../index.html">デモ</a> &gt; ツールボックス</h1>
 
-  <p>This is a demo of a complex category structure for the toolbox.</p>
+  <p>これは、ツールボックスの複雑なカテゴリ構造のデモです。</p>
 
-  <p>&rarr; More info on the <a href="https://developers.google.com/blockly/guides/configure/web/toolbox">Toolbox</a>&hellip;</p>
+  <p>&rarr; <a href="https://developers.google.com/blockly/guides/configure/web/toolbox">ツールボックス</a>の詳細&hellip;</p>
 
   <div id="blocklyDiv" style="height: 600px; width: 800px;"></div>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
+    <category name="論理" colour="%{BKY_LOGIC_HUE}">
       <category name="If">
         <block type="controls_if"></block>
         <block type="controls_if">
@@ -38,7 +38,7 @@
           <mutation elseif="1" else="1"></mutation>
         </block>
       </category>
-      <category name="Boolean" colour="%{BKY_LOGIC_HUE}">
+      <category name="真偽" colour="%{BKY_LOGIC_HUE}">
         <block type="logic_compare"></block>
         <block type="logic_operation"></block>
         <block type="logic_negate"></block>
@@ -47,7 +47,7 @@
         <block type="logic_ternary"></block>
       </category>
     </category>
-    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+    <category name="ループ" colour="%{BKY_LOOPS_HUE}">
       <block type="controls_repeat_ext">
         <value name="TIMES">
           <block type="math_number">
@@ -77,7 +77,7 @@
       <block type="controls_forEach"></block>
       <block type="controls_flow_statements"></block>
     </category>
-    <category name="Math" colour="%{BKY_MATH_HUE}">
+    <category name="数学" colour="%{BKY_MATH_HUE}">
       <block type="math_number">
         <field name="NUM">123</field>
       </block>
@@ -116,7 +116,7 @@
       <block type="math_random_float"></block>
       <block type="math_atan2"></block>
     </category>
-    <category name="Lists" colour="%{BKY_LISTS_HUE}">
+    <category name="リスト" colour="%{BKY_LISTS_HUE}">
       <block type="lists_create_empty"></block>
       <block type="lists_create_with"></block>
       <block type="lists_repeat">
@@ -133,13 +133,13 @@
       <block type="lists_setIndex"></block>
     </category>
     <sep></sep>
-    <category name="Variables" custom="VARIABLE" colour="%{BKY_VARIABLES_HUE}">
+    <category name="変数" custom="VARIABLE" colour="%{BKY_VARIABLES_HUE}">
     </category>
-    <category name="Functions" custom="PROCEDURE" colour="%{BKY_PROCEDURES_HUE}">
+    <category name="関数" custom="PROCEDURE" colour="%{BKY_PROCEDURES_HUE}">
     </category>
     <sep></sep>
-    <category name="Library" expanded="true">
-      <category name="Randomize">
+    <category name="ライブラリ" expanded="true">
+      <category name="乱数">
         <block type="procedures_defnoreturn">
           <mutation>
             <arg name="list"></arg>
@@ -266,7 +266,7 @@
           </statement>
         </block>
       </category>
-      <category name="Jabberwocky">
+      <category name="ジャバウォックの詩">
         <block type="text_print">
           <value name="TEXT">
             <block type="text">

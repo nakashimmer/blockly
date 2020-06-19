@@ -2,11 +2,11 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Demo: Keyboard Navigation</title>
+  <title>Blockly デモ: キーボードナビゲーション</title>
   <script src="../../blockly_compressed.js"></script>
   <script src="../../blocks_compressed.js"></script>
   <script src="../../javascript_compressed.js"></script>
-  <script src="../../msg/js/en.js"></script>
+  <script src="../../msg/js/ja.js"></script>
   <script src="line_cursor.js"></script>
   <style>
     body {
@@ -50,43 +50,34 @@
 </head>
 <body>
   <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
-    <a href="../index.html">Demos</a> &gt; Keyboard Navigation</h1>
+    <a href="../index.html">デモ</a> &gt; キーボードナビゲーション</h1>
 
-  <p>Keyboard Navigation is our first step towards an accessible Blockly.<br />
-  For more information on how the default keyboard navigation works please see
-  the <a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav">documentation</a>.
+  <p>キーボードナビゲーションは、アクセス可能なBlocklyへの第一歩です。<br />
+	デフォルトのキーボードナビゲーションの動作の詳細については<a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav">ドキュメント</a>をご覧ください.
   <br />
   <br />
-  <b>Pre Order Traversal</b><br />
-  Feel free to just play around in accessibility mode or hit the button below to see the demo.
-  The demo uses <a href="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order_(NLR)">preorder tree traversal</a>
-  as an alternative way to navigate the blocks,
-  connections, and fields on the workspace.<br /><br />
+  <b>プレオーダトラバーサル</b><br />
+  アクセシビリティモードで遊ぶか、下のボタンをクリックしてデモをご覧ください。デモでは 、ワークスペース上のブロック、接続、およびフィールドをナビゲートするための代替方法として、<a href="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order_(NLR)">プレオーダーツリートラバーサル</a>を使用しています。<br /><br />
 
-  <b>Cursors</b><br />
-  The cursor controls how the user navigates the blocks, inputs, fields and connections on a workspace.
-  This demo shows three different cursors:<br />
-  <b>Default Cursor:</b> Explained in <a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav">documentation</a>.<br />
-  <b>Basic Cursor:</b> Uses pre order traversal to allow users to navigate
-  through everything using only the previous and next command.<br />
-  <b>Line Cursor:</b> We tried to make this cursor mimic a text editor. Navigating
-  up and down will take the cursor to the next and previous "line" of code.
-  Navigating in and out will move the cursor through all the fields and inputs
-  in that "line" of code.
+  <b>カーソル</b><br />
+	ユーザーはブロック、入力、フィールドとの接続のをナビゲートする方法カーソルコントロールワークスペース。このデモは、3つの異なるカーソルを示しています。<br />
+  <b>デフォルトカーソル:</b><a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav">ドキュメント</a>をご覧ください。<br />
+  <b>基本カーソル:</b>プレオーダトラバーサルを使用して、ユーザーが前後のコマンドのみを使用してすべてをナビゲートできるようにします。<br />
+  <b>ラインカーソル:</b> このカーソルがテキストエディターを模倣するようにしました。上下に移動すると、カーソルがコードの次および前の「行」に移動します。内外に移動すると、カーソルがコードの「行」内のすべてのフィールドと入力に移動します。
   </p>
 
   <p>
-    <label for="accessibilityModeCheck">Enable Accessibility Mode:</label>
+    <label for="accessibilityModeCheck">アクセシビリティモードを有効にする:</label>
     <input type="checkbox" onclick="toggleAccessibilityMode(this.checked)" id="accessibilityModeCheck">
     <select id="cursorChanger" name="cursor" onchange="changeCursor(this.value)">
-      <option value="default">Default Cursor</option>
-      <option value="basic">Basic Cursor</option>
-      <option value="line">Line Cursor</option>
+      <option value="default">デフォルトカーソル</option>
+      <option value="basic">基本カーソル</option>
+      <option value="line">ラインカーソル</option>
     </select>
 
-    <button onclick="preOrderDemo()">Start Pre-order Demo</button>
-    <button onclick="stopDemo()">Stop Pre-order Demo</button>
-    <label for="displayKeyMappings">Open Key Mappings:</label>
+    <button onclick="preOrderDemo()">プレーオーダデモ</button>
+    <button onclick="stopDemo()">プレオーダストップ</button>
+    <label for="displayKeyMappings">キーマッピングを開く</label>
     <input type="checkbox" onclick="toggleDisplayKeyMappings(this.checked)" id="displayKeyMappings">
   </p>
 
@@ -99,14 +90,14 @@
   </div>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
+    <category name="論理" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
       <block type="logic_negate"></block>
       <block type="logic_boolean"></block>
     </category>
-    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+    <category name="ループ" colour="%{BKY_LOOPS_HUE}">
       <block type="controls_repeat_ext">
         <value name="TIMES">
           <block type="math_number">
@@ -116,14 +107,14 @@
       </block>
       <block type="controls_whileUntil"></block>
     </category>
-    <category name="Math" colour="%{BKY_MATH_HUE}">
+    <category name="数学" colour="%{BKY_MATH_HUE}">
       <block type="math_number">
         <field name="NUM">123</field>
       </block>
       <block type="math_arithmetic"></block>
       <block type="math_single"></block>
     </category>
-    <category name="Text" colour="%{BKY_TEXTS_HUE}">
+    <category name="テキスト" colour="%{BKY_TEXTS_HUE}">
       <block type="text"></block>
       <block type="text_length"></block>
       <block type="text_print"></block>
