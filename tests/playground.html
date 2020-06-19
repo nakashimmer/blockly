@@ -65,14 +65,23 @@
 <script src="../blocks/variables_dynamic.js"></script>
 <script src="../blocks/procedures.js"></script>
 <script src="blocks/test_blocks.js"></script>
+<script src="themes/test_themes.js"></script>
 <script src="./playgrounds/screenshot.js"></script>
 
 <script>
 // Custom requires for the playground.
+
+// Rendering.
 goog.require('Blockly.blockRendering.Debug');
 goog.require('Blockly.minimalist.Renderer');
+goog.require('Blockly.Themes.Modern');
+goog.require('Blockly.Themes.Zelos');
 goog.require('Blockly.thrasos.Renderer');
 goog.require('Blockly.zelos.Renderer');
+
+// Other.
+goog.require('Blockly.WorkspaceCommentSvg');
+goog.require('Blockly.WorkspaceCommentSvg.render');
 </script>
 <script>
 'use strict';
@@ -143,6 +152,7 @@ function start() {
   workspace.configureContextMenu = configureContextMenu;
   addToolboxButtonCallbacks();
   addRenderDebugOptionsCheckboxes();
+  populateTestThemes();
   // Restore previously displayed text.
   if (sessionStorage) {
     var text = sessionStorage.getItem('textarea');
@@ -192,8 +202,9 @@ function addToolboxButtonCallbacks() {
     }
   };
   var setRandomStyle = function(button) {
-    var blocks = button.workspace_.getAllBlocks();
-    var styles = Object.keys(workspace.getTheme().getAllBlockStyles());
+    var blocks = button.workspace_.getAllBlocks(false);
+    var styles =
+        Object.keys(workspace.getRenderer().getConstants().blockStyles);
     styles.splice(styles.indexOf(blocks[0].getStyleName()), 1);
     var style = styles[Math.floor(Math.random() * styles.length)];
     for(var i = 0, block; block = blocks[i]; i++) {
@@ -201,26 +212,26 @@ function addToolboxButtonCallbacks() {
     }
   };
   var toggleEnabled = function(button) {
-    var blocks = button.workspace_.getAllBlocks();
+    var blocks = button.workspace_.getAllBlocks(false);
     for(var i = 0, block; block = blocks[i]; i++) {
       block.setEnabled(!block.isEnabled());
     }
   };
   var toggleShadow = function(button) {
-    var blocks = button.workspace_.getAllBlocks();
+    var blocks = button.workspace_.getAllBlocks(false);
     for(var i = 0, block; block = blocks[i]; i++) {
       block.setShadow(!block.isShadow());
     }
   };
   var toggleCollapsed = function(button) {
-    var blocks = button.workspace_.getAllBlocks();
+    var blocks = button.workspace_.getAllBlocks(false);
     for(var i = 0, block; block = blocks[i]; i++) {
       block.setCollapsed(!block.isCollapsed());
     }
   };
   var setInput = function(button) {
     Blockly.prompt('Input text to set.', 'ab', function(input) {
-      var blocks = button.getTargetWorkspace().getAllBlocks();
+      var blocks = button.getTargetWorkspace().getAllBlocks(false);
       for(var i = 0, block; block = blocks[i]; i++) {
         if (block.getField('INPUT')) {
           block.setFieldValue(input, 'INPUT');
@@ -237,11 +248,9 @@ function addToolboxButtonCallbacks() {
     for (var i = 0, block; block = blocks[i]; i++) {
       var imageField = block.getField('IMAGE');
       imageField.setValue(src);
-      imageField.setText(image);
     }
   };
   var addVariables = function(button) {
-    workspace.createVariable('1a', '', '1A');
     workspace.createVariable('1b', '', '1B');
     workspace.createVariable('1c', '', '1C');
     workspace.createVariable('2a', '', '2A');
@@ -250,13 +259,13 @@ function addToolboxButtonCallbacks() {
   };
 
   workspace.registerButtonCallback(
-    'addVariables', addVariables);
+      'addVariables', addVariables);
   workspace.registerButtonCallback(
-    'changeImage', changeImage);
+      'changeImage', changeImage);
   workspace.registerButtonCallback(
-    'addAllBlocksToWorkspace', addAllBlocksToWorkspace);
+      'addAllBlocksToWorkspace', addAllBlocksToWorkspace);
   workspace.registerButtonCallback(
-    'setInput', setInput);
+      'setInput', setInput);
   workspace.registerButtonCallback(
       'setRandomStyle', setRandomStyle);
   workspace.registerButtonCallback(
@@ -268,12 +277,22 @@ function addToolboxButtonCallbacks() {
   workspace.registerButtonCallback(
       'randomizeLabelText', randomizeLabelText);
   workspace.registerButtonCallback(
-      'addDynamicOption', Blockly.TestBlocks.addDynamicDropdownOption_);
+      'addDynamicOption', Blockly.TestBlocks.addDynamicDropdownOption);
   workspace.registerButtonCallback(
-      'removeDynamicOption', Blockly.TestBlocks.removeDynamicDropdownOption_);
+      'removeDynamicOption', Blockly.TestBlocks.removeDynamicDropdownOption);
+  workspace.registerButtonCallback(
+      'insertConnectionRows', Blockly.TestBlocks.insertConnectionRows);
+  workspace.registerButtonCallback(
+      'insertConnectionStacks', Blockly.TestBlocks.insertConnectionStacks);
+  workspace.registerButtonCallback(
+      'insertConnectionStatements',
+          Blockly.TestBlocks.insertConnectionStatements);
 }
 
 function setRenderDebugOptionCheckboxState(overrideOptions) {
+  if (!Blockly.blockRendering.Debug) {
+    return;
+  }
   Blockly.blockRendering.Debug.config = overrideOptions || {};
   if (!overrideOptions) {
     return;
@@ -289,6 +308,9 @@ function setRenderDebugOptionCheckboxState(overrideOptions) {
 }
 
 function updateRenderDebugOptions(e) {
+  if (!Blockly.blockRendering.Debug) {
+    return;
+  }
   var target = e.target;
   var optionName = target.getAttribute('data-optionName');
   var config = Blockly.blockRendering.Debug.config;
@@ -299,6 +321,9 @@ function updateRenderDebugOptions(e) {
 }
 
 function addRenderDebugOptionsCheckboxes() {
+  if (!Blockly.blockRendering.Debug) {
+    return;
+  }
   var renderDebugConfig = Blockly.blockRendering.Debug.config;
   var renderDebugOptionsListEl = document.getElementById('renderDebugOptions');
   var optionNames = Object.keys(renderDebugConfig);
@@ -321,15 +346,39 @@ function addRenderDebugOptionsCheckboxes() {
 
 function changeTheme() {
   var theme = document.getElementById('themeChanger');
-  if (theme.value === "modern") {
-    Blockly.getMainWorkspace().setTheme(Blockly.Themes.Modern);
-  } else if (theme.value === "dark") {
+
+  if (theme.value === "dark") {
     Blockly.getMainWorkspace().setTheme(Blockly.Themes.Dark);
   } else if (theme.value === "high_contrast") {
     Blockly.getMainWorkspace().setTheme(Blockly.Themes.HighContrast);
+  } else if (theme.value === "deuteranopia") {
+    Blockly.getMainWorkspace().setTheme(Blockly.Themes.Deuteranopia);
+  } else if (theme.value === "tritanopia") {
+    Blockly.getMainWorkspace().setTheme(Blockly.Themes.Tritanopia);
+  } else if (theme.value === "modern") {
+    Blockly.getMainWorkspace().setTheme(Blockly.Themes.Modern);
+  } else if (theme.value === "zelos") {
+    Blockly.getMainWorkspace().setTheme(Blockly.Themes.Zelos);
   } else {
-    Blockly.getMainWorkspace().setTheme(Blockly.Themes.Classic);
+    var testTheme = getTestTheme(theme.value);
+    if (testTheme) {
+      Blockly.getMainWorkspace().setTheme(testTheme);
+    } else {
+      Blockly.getMainWorkspace().setTheme(Blockly.Themes.Classic);
+    }
   }
+}
+
+function changeRenderingConstant(value) {
+  var type = document.getElementById('rendering-constant-selector').value;
+  if (type == 'fontSize') {
+    var fontStyle = {
+      'size': value
+    };
+    workspace.getTheme().setFontStyle(fontStyle);
+  }
+  // Refresh theme.
+  workspace.setTheme(workspace.getTheme());
 }
 
 function setBackgroundColour() {
@@ -405,6 +454,9 @@ function logEvents(state) {
 }
 
 function toggleRenderingDebug(state) {
+  if (!Blockly.blockRendering.Debug) {
+    return;
+  }
   var checkbox = document.getElementById('blockRenderDebugCheck');
   checkbox.checked = state;
   if (sessionStorage) {
@@ -429,7 +481,7 @@ function toggleAccessibilityMode(state) {
   }
 }
 
-function configureContextMenu(menuOptions) {
+function configureContextMenu(menuOptions, e) {
   var screenshotOption = {
     text: 'Download Screenshot',
     enabled: workspace.getTopBlocks().length,
@@ -438,6 +490,9 @@ function configureContextMenu(menuOptions) {
     }
   };
   menuOptions.push(screenshotOption);
+
+  // Adds a default-sized workspace comment to the workspace.
+  menuOptions.push(Blockly.ContextMenu.workspaceCommentOption(workspace, e));
 }
 
 function logger(e) {
@@ -548,6 +603,10 @@ var spaghettiXml = [
   .blockRenderDebug {
     display: none;
   }
+
+  .zelos-renderer .blocklyFlyoutButton .blocklyText {
+    font-size: 1.5rem;
+  }
 </style>
 </head>
 <body onload="start()">
@@ -588,6 +647,9 @@ var spaghettiXml = [
     <option value="modern">Modern</option>
     <option value="dark">Dark</option>
     <option value="high_contrast">High Contrast</option>
+    <option value="deuteranopia">Deuteranopia/Protanopia</option>
+    <option value="tritanopia">Tritanopia</option>
+    <option value="zelos">Zelos</option>
   </select>
   <p>
     <input type="button" value="Export to XML" onclick="toXml()">
@@ -612,6 +674,15 @@ var spaghettiXml = [
     Stress test: &nbsp;
     <input type="button" value="Airstrike!" onclick="airstrike(100)">
     <input type="button" value="Spaghetti!" onclick="spaghetti(8)">
+  </p>
+  <p>
+    Rendering: &nbsp;
+    <select id="rendering-constant-selector">
+      <option value="fontSize">Font Size</option>
+    </select>
+    <input type="range" min="3" max="50" value="4"
+      oninput="changeRenderingConstant(this.value)"
+      onchange="changeRenderingConstant(this.value)" />
   </p>
   <ul class="playgroundToggleOptions">
     <li>
@@ -1350,9 +1421,16 @@ var spaghettiXml = [
   the standard predefined blocks, and so test alternative block rendering
   code paths. -->
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox-test-blocks" style="display: none">
+    <category name="Align">
+      <block type="test_align_dummy_right"></block>
+      <block type="test_align_all"></block>
+      <block type="test_align_with_external_input"></block>
+    </category>
     <category name="Basic">
       <block type="test_basic_empty"></block>
       <block type="test_basic_empty_with_mutator"></block>
+      <block type="test_basic_dummy"></block>
+      <block type="test_basic_multiple_dummy"></block>
       <block type="test_basic_stack"></block>
       <block type="test_basic_row"></block>
       <block type="test_basic_value_to_stack"></block>
@@ -1360,6 +1438,74 @@ var spaghettiXml = [
       <block type="test_basic_limit_instances"></block>
       <block type="test_basic_tooltips"></block>
       <block type="test_basic_javascript"></block>
+    </category>
+    <category name="Connections" expanded="true">
+      <category name="Row">
+        <label text="blocks have"></label>
+        <sep gap="-1"></sep>
+        <label text="tooltips"></label>
+
+        <button text="insert" callbackkey="insertConnectionRows"></button>
+        <sep gap="7"></sep>
+        <block type="test_connections_row_input"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_row_blue"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_row_yellow"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_row_red"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_row_output"></block>
+        <block type="test_connections_row_yellow">
+          <value name="NAME">
+            <block type="test_connections_row_yellow" movable="false"></block>
+          </value>
+        </block>
+        <sep gap="7"></sep>
+        <block type="test_connections_multivalue_1valid"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_multivalue_2valid"></block>
+      </category>
+      <category name="Stack">
+        <label text="blocks have"></label>
+        <sep gap="-1"></sep>
+        <label text="tooltips"></label>
+
+        <button text="insert" callbackkey="insertConnectionStacks"></button>
+        <sep gap="7"></sep>
+        <block type="test_connections_stack_next"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_stack_blue"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_stack_yellow"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_stack_red"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_stack_prev"></block>
+        <block type="test_connections_stack_yellow">
+          <next>
+            <block type="test_connections_stack_yellow" movable="false"></block>
+          </next>
+        </block>
+      </category>
+      <category name="Statement">
+        <label text="blocks have"></label>
+        <sep gap="-1"></sep>
+        <label text="tooltips"></label>
+
+        <button text="insert" callbackkey="insertConnectionStatements"></button>
+        <sep gap="7"></sep>
+        <block type="test_connections_statement_blue"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_statement_yellow"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_statement_red"></block>
+        <block type="test_connections_statement_nonext"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_multistatement_1valid"></block>
+        <sep gap="7"></sep>
+        <block type="test_connections_multistatement_2valid"></block>
+      </category>
     </category>
     <category name="Drag">
       <label text="Drag each to the workspace"></label>
@@ -1458,6 +1604,7 @@ var spaghettiXml = [
         <block type="test_fields_colour"></block>
         <block type="test_fields_colour_options"></block>
         <block type="test_fields_text_input"></block>
+        <block type="test_fields_only_text_input"></block>
         <block type="test_fields_multilinetext"></block>
         <block type="test_fields_variable"></block>
         <button text="randomize label text" callbackKey="randomizeLabelText"></button>
@@ -1514,6 +1661,7 @@ var spaghettiXml = [
         <block type="test_images_fliprtl"></block>
         <block type="test_images_missing"></block>
         <block type="test_images_many_icons"></block>
+        <block type="test_images_clickhandler"></block>
       </category>
       <category name="Emoji! o((*^ᴗ^*))o">
         <label text="Unicode & Emojis"></label>
